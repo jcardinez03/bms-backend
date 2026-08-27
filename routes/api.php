@@ -1,11 +1,41 @@
 <?php
 
-use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\BusinessTypeController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\BusinessController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/register', [RegisterController::class,'store']);
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/register', [RegisterController::class, 'store'])->name('register');
+
+// business types
+Route::get('/business-types/get', [BusinessTypeController::class, 'getBusinessTypes']);
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Categories
+    Route::post('/categories/{business_id}/store', [CategoryController::class, 'store']);
+    Route::get('/categories/{business_id}/get', [CategoryController::class, 'getCategories']);
+
+    // Product
+    Route::post('/products/{business_id}/store', [ProductController::class, 'store']);
+    Route::get('/products/{business_id}/get',[ProductController::class,'getProducts']);
+    Route::patch('/products/{product_id}/update', [ProductController::class,'update']);
+    Route::patch('/products/{product_id}/status', [ProductController::class,'status']);
+    Route::delete('/products/{product_id}/destroy', [ProductController::class,'destroy']);
+
+    // Business
+    Route::get('/businesses/get', [BusinessController::class, 'getBusinesses']);
+    Route::get('/business/{business_id}/get', [BusinessController::class, 'getBusiness']);
+
+});
