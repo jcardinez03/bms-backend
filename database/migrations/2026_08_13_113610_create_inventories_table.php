@@ -14,19 +14,14 @@ return new class extends Migration
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->string('SKU')->unique();
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('status_id');
             $table->integer('stock');
             $table->integer('reorder_at');
             $table->integer('reorder_qty');
-            $table->unsignedBigInteger('location_id');
+            $table->unsignedBigInteger('location_id')->nullable();
             $table->date('last_restocked_at');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('location_id')->references('id')->on('locations');
         });
     }

@@ -54,16 +54,11 @@ class ProductController extends Controller
 
     public function getProducts($business_id)
     {
-        $all_products = $this->product->where('business_id', $business_id)->get();
+        $all_products = $this->product->with('category')->where('business_id', $business_id)->get();
 
-        $category_name = [];
-        foreach($all_products as $product){
-            $category_name[] = $product->category->name;
-        }
 
         return response()->json([
-            'all_products' => $all_products, 
-            'category_name' => $category_name]);
+            'all_products' => $all_products]);
     }
 
     public function update(Request $request, $id)

@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\InventoryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -38,4 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/businesses/get', [BusinessController::class, 'getBusinesses']);
     Route::get('/business/{business_id}/get', [BusinessController::class, 'getBusiness']);
 
+    // Inventory
+    Route::post('/inventories/store', [InventoryController::class,'store']);
+    Route::get('/inventories/get', [InventoryController::class,'getInventories']);
 });
