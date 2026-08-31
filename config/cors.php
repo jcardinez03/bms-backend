@@ -22,7 +22,7 @@ return [
     'allowed_origins' => [
         'http://localhost:5173',
         'https://business-management-system-three.vercel.app',
-        'business-management-system-9elrbaswc-marwin-jade.vercel.app'
+        'https://business-management-system-9elrbaswc-marwin-jade.vercel.app'
     ],
 
     'allowed_origins_patterns' => [],
