@@ -8,6 +8,7 @@ class BusinessUser extends Model
 {
     public $timestamps = false;
     protected $table = 'business_user';
+    public $incrementing = false;
     public function business()
     {
         return $this->belongsTo(Business::class);
