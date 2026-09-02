@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     private $user;
@@ -22,28 +22,27 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return response()->json([
-                'message' => 'Logged in successfully',
-                'user' => Auth::user()
-            ]);
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            return response()->json(['message' => 'Invalid credentials!'], 401);
         }
 
+        $token = $user->createToken('auth-token')->plainTextToken;
+
         return response()->json([
-            'message' => 'Invalid credentials!'
-        ], 401);
+            'message' => 'Logged in successfully',
+            'user' => $user,
+            'token' => $token,
+        ]);
     }
 
     public function logout(Request $request)
-    {
-        Auth::logout();
+{
+    $request->user()->currentAccessToken()->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return response()->json([
-            'message' => 'Logged out successfully!'
-        ]);
-    }
+    return response()->json([
+        'message' => 'Logged out successfully!'
+    ]);
+}
 }

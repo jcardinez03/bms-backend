@@ -15,7 +15,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
 // business types
@@ -24,6 +23,7 @@ Route::get('/business-types/get', [BusinessTypeController::class, 'getBusinessTy
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     // Categories
     Route::post('/categories/{business_id}/store', [CategoryController::class, 'store']);
     Route::get('/categories/{business_id}/get', [CategoryController::class, 'getCategories']);
