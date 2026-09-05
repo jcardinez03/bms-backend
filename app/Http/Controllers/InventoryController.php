@@ -46,9 +46,16 @@ class InventoryController extends Controller
         ]);
     }
 
-    public function getInventories()
+    public function getInventories($business_id)
     {
-        $all_inventories = $this->inventory->with('product.category')->latest()->get();
+        $all_inventories = $this->inventory->with('product.category')
+        // whereHas('product', ...) - filter inventories based on their related product
+        // function ($query) - defines the condition/query to apply to the related product
+        // use ($business_id) -  makes the $business_id parameter available inside the function
+        // $query->where() - the actual condition applied to the product
+                            ->whereHas('product', function ($query) use ($business_id) {
+                                $query->where('business_id', $business_id);
+                            })->get();
 
         return response()->json($all_inventories);
     }

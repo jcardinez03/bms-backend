@@ -31,10 +31,35 @@ class CategoryController extends Controller
 
     public function getCategories($business_id)
     {
-        $categories = $this->category->where('business_id', $business_id)->get();
+        $categories = $this->category
+                ->with('products')    
+                ->where('business_id', $business_id)->get();
 
         return response()->json($categories);
     }
 
+    public function update(Request $request, $category_id)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $category = $this->category->find($category_id);
+        $category->name = $request->name;
+        $category->save();
+
+        return response()->json([
+            'message' => 'Updated successfully!'
+        ]);
+    }
+
+    public function destroy($category_id)
+    {
+        $this->category->destroy($category_id);
+
+        return response()->json([
+            'message' => 'Deleted Successfully!'
+        ]);
+    }
    
 }

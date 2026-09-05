@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Categories
     Route::post('/categories/{business_id}/store', [CategoryController::class, 'store']);
     Route::get('/categories/{business_id}/get', [CategoryController::class, 'getCategories']);
+    Route::patch('/categories/{category_id}/update', [CategoryController::class,'update']);
+    Route::delete('/categories/{category_id}/destroy', [CategoryController::class,'destroy']);
 
     // Product
     Route::post('/products/{business_id}/store', [ProductController::class, 'store']);
@@ -41,5 +43,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Inventory
     Route::post('/inventories/store', [InventoryController::class,'store']);
-    Route::get('/inventories/get', [InventoryController::class,'getInventories']);
+    Route::get('/inventories/{business_id}/get', [InventoryController::class,'getInventories']);
 });
