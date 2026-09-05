@@ -31,13 +31,13 @@ class ProductController extends Controller
         
 
         $count = $this->product->where('sku' , 'like' , $prefix .'%')->count();
-        $SKU = $prefix . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+        $sku = $prefix . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
 
         $this->product->name = $request->name;
-        if($request->SKU){
-            $this->product->SKU = $request->SKU;
+        if($request->sku){
+            $this->product->sku = $request->sku;
         } else {
-            $this->product->SKU = $SKU;
+            $this->product->sku = $sku;
         }
         $this->product->cost = $request->cost;
         $this->product->selling_price = $request->selling_price;
